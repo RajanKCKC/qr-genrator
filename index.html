@@ -3,121 +3,191 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Generator - Better Style</title>
+    <title>QR Generator - Polished</title>
     <style>
       :root {
         color-scheme: dark light;
         font-family: 'Inter', Arial, sans-serif;
-        background: #eef2ff;
-        color: #111827;
+        background: #eff6ff;
+        color: #0f172a;
       }
       body {
         margin: 0;
         min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
+        display: grid;
+        place-items: center;
+        padding: 28px;
       }
-      .panel {
-        width: min(600px, 100%);
-        border-radius: 28px;
-        background: radial-gradient(circle at top left, #ffffff 0%, #eef2ff 40%, #f8fafc 100%);
-        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
-        padding: 32px;
+      .frame {
+        width: min(960px, 100%);
+        border-radius: 36px;
+        overflow: hidden;
+        background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.14), transparent 28%),
+          linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+        box-shadow: 0 30px 100px rgba(15, 23, 42, 0.16);
       }
-      .top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 24px;
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 32px;
+        padding: 44px;
+      }
+      .hero-left {
+        display: grid;
+        gap: 18px;
       }
       h1 {
         margin: 0;
-        font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+        font-size: clamp(2.4rem, 3vw, 3.4rem);
       }
       p.lead {
-        margin: 8px 0 0;
-        color: #475569;
+        margin: 0;
+        max-width: 550px;
+        color: #334155;
+        line-height: 1.7;
+      }
+      .panel {
+        display: grid;
+        gap: 20px;
       }
       .field {
         display: grid;
-        gap: 12px;
-        margin-bottom: 22px;
+        gap: 10px;
       }
-      input {
+      input,
+      select,
+      button {
         width: 100%;
+        border-radius: 18px;
         padding: 16px 18px;
-        border-radius: 16px;
+        font-size: 1rem;
         border: 1px solid #cbd5e1;
-        outline: none;
-        transition: border-color 0.2s ease;
-      }
-      input:focus {
-        border-color: #6366f1;
+        background: white;
       }
       button {
-        width: min(220px, 100%);
-        padding: 16px 18px;
-        border-radius: 16px;
+        color: white;
+        background: linear-gradient(135deg, #4338ca, #2563eb);
         border: none;
-        background: #6366f1;
-        color: #fff;
-        font-weight: 700;
         cursor: pointer;
-        transition: transform 0.2s ease, background 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
       button:hover {
-        background: #4f46e5;
         transform: translateY(-1px);
+        box-shadow: 0 18px 32px rgba(59, 130, 246, 0.22);
       }
-      #preview {
-        margin-top: 24px;
-        padding: 22px;
+      .result {
+        display: grid;
+        gap: 16px;
+        background: #f8fbff;
+        border-radius: 26px;
+        padding: 26px;
+        border: 1px solid #dbeafe;
+      }
+      .result img {
+        width: 100%;
+        max-width: 340px;
         border-radius: 22px;
-        background: #ffffff;
-        border: 1px solid rgba(99, 102, 241, 0.14);
       }
-      #preview strong {
-        display: block;
-        margin-bottom: 12px;
+      .actions {
+        display: grid;
+        gap: 14px;
+      }
+      .actions button,
+      .actions a {
+        width: 100%;
+      }
+      @media (max-width: 860px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
-    <section class="panel">
-      <div class="top">
-        <div>
-          <h1>QR Code Generator</h1>
-          <p class="lead">Version 6: Stronger styling, smooth spacing, and modern layout.</p>
+    <article class="frame">
+      <div class="hero">
+        <div class="hero-left">
+          <h1>Polished QR Code Generator</h1>
+          <p class="lead">Version 12: Smooth animations, polished UX, theme-ready styling, and complete QR generation with copy/download support.</p>
+        </div>
+
+        <div class="panel">
+          <div class="field">
+            <label for="qr-text">Enter text or URL</label>
+            <input id="qr-text" type="text" placeholder="https://your-site.com" />
+          </div>
+          <div class="field">
+            <label for="qr-size">Image size</label>
+            <select id="qr-size">
+              <option value="220">220 x 220</option>
+              <option value="320" selected>320 x 320</option>
+              <option value="420">420 x 420</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="qr-color">QRCode color</label>
+            <select id="qr-color">
+              <option value="000000">Black</option>
+              <option value="1e3a8a">Indigo</option>
+              <option value="047857">Teal</option>
+              <option value="b91c1c">Crimson</option>
+            </select>
+          </div>
+          <button id="generate">Generate QR Code</button>
+
+          <div class="result" id="result" hidden>
+            <strong>Your QR Preview</strong>
+            <p id="result-text"></p>
+            <img id="qr-image" alt="Generated QR code" src="" />
+            <div class="actions">
+              <button id="copy-text">Copy QR content</button>
+              <a id="download-link" download="qr-code.png"><button type="button">Download PNG</button></a>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="field">
-        <label for="qr-text">Text or URL</label>
-        <input id="qr-text" type="text" placeholder="Enter something memorable" />
-      </div>
-      <button id="generate">Generate QR</button>
-
-      <div id="preview">
-        <strong>Preview</strong>
-        <p id="preview-text">Click the button to see a preview before the real QR will appear.</p>
-      </div>
-    </section>
+    </article>
 
     <script>
-      const generateButton = document.getElementById('generate');
       const qrText = document.getElementById('qr-text');
-      const previewText = document.getElementById('preview-text');
+      const qrSize = document.getElementById('qr-size');
+      const qrColor = document.getElementById('qr-color');
+      const generateButton = document.getElementById('generate');
+      const resultSection = document.getElementById('result');
+      const qrImage = document.getElementById('qr-image');
+      const resultText = document.getElementById('result-text');
+      const copyText = document.getElementById('copy-text');
+      const downloadLink = document.getElementById('download-link');
+
+      function buildQrUrl(text, size, color) {
+        return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&color=${color}&data=${encodeURIComponent(text)}`;
+      }
 
       generateButton.addEventListener('click', () => {
-        const value = qrText.value.trim();
-        if (!value) {
-          previewText.textContent = 'Your QR code content needs at least one character.';
+        const text = qrText.value.trim();
+        const size = qrSize.value;
+        const color = qrColor.value;
+
+        if (!text) {
+          alert('Please enter text or a URL to generate a QR code.');
           return;
         }
-        previewText.textContent = `Ready to generate a QR code for: ${value}`;
+
+        const url = buildQrUrl(text, size, color);
+        qrImage.src = url;
+        downloadLink.href = url;
+        resultText.textContent = `Encoding: ${text}`;
+        resultSection.hidden = false;
+      });
+
+      copyText.addEventListener('click', async () => {
+        const text = qrText.value.trim();
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
+        copyText.textContent = 'Copied!';
+        setTimeout(() => {
+          copyText.textContent = 'Copy QR content';
+        }, 1400);
       });
     </script>
   </body>
