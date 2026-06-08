@@ -3,74 +3,80 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Generator - Basic Style</title>
+    <title>QR Generator - Script Added</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 24px;
-        background: #f7f9fc;
-        color: #20232a;
+        background: #f4f6fb;
+        color: #1f2937;
       }
-      header {
-        margin-bottom: 24px;
+      main {
+        max-width: 460px;
+        margin: 0 auto;
       }
-      form {
-        max-width: 420px;
-        background: #ffffff;
-        padding: 18px;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
       }
-      label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-      }
-      input {
-        width: 100%;
-        padding: 10px 12px;
-        margin-bottom: 16px;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
-      }
+      input,
       button {
         width: 100%;
         padding: 12px;
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+      }
+      button {
+        background: #2563eb;
+        color: #fff;
         border: none;
-        border-radius: 8px;
-        background: #2f80ed;
-        color: white;
-        font-weight: 700;
         cursor: pointer;
       }
       button:hover {
-        background: #1f6ad6;
+        background: #1e40af;
       }
-      #preview {
-        margin-top: 16px;
-        padding: 16px;
-        background: #eef3ff;
-        border-radius: 10px;
+      #result {
+        margin-top: 18px;
+        padding: 14px;
+        background: #eff6ff;
+        border-radius: 12px;
       }
     </style>
   </head>
   <body>
-    <header>
-      <h1>QR Code Generator</h1>
-      <p>Version 3: Added styling and a polished card layout.</p>
-    </header>
-
     <main>
-      <form>
-        <label for="qr-text">Text or URL</label>
-        <input id="qr-text" type="text" placeholder="Enter text or link" />
-        <button type="button">Generate QR</button>
-      </form>
-      <section id="preview">
-        <strong>Preview</strong>
-        <p>Your QR code will appear here in the next version.</p>
-      </section>
+      <div class="card">
+        <h1>QR Code Generator</h1>
+        <p>Version 4: Script added to show typed text in the preview area.</p>
+
+        <label for="qr-text">Enter text or link</label>
+        <input id="qr-text" type="text" placeholder="Start typing..." />
+        <button id="generate">Generate QR</button>
+
+        <div id="result">
+          <strong>Preview</strong>
+          <p id="preview-text">No input yet.</p>
+        </div>
+      </div>
     </main>
+
+    <script>
+      const generateButton = document.getElementById('generate');
+      const qrText = document.getElementById('qr-text');
+      const previewText = document.getElementById('preview-text');
+
+      generateButton.addEventListener('click', () => {
+        const value = qrText.value.trim();
+        if (!value) {
+          previewText.textContent = 'Please enter text or a link to generate a QR code.';
+          return;
+        }
+        previewText.textContent = `QR content: ${value}`;
+      });
+    </script>
   </body>
 </html>
