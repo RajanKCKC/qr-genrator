@@ -3,66 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Generator - Script Added</title>
+    <title>QR Generator - Better HTML</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: 'Inter', Arial, sans-serif;
         margin: 0;
-        padding: 24px;
-        background: #f4f6fb;
-        color: #1f2937;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+        color: #111827;
       }
-      main {
-        max-width: 460px;
-        margin: 0 auto;
+      .container {
+        width: min(520px, 100%);
+        padding: 30px;
       }
       .card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 14px;
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: 0 16px 50px rgba(17, 24, 39, 0.08);
+      }
+      h1 {
+        margin-top: 0;
+      }
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 20px;
       }
       input,
       button {
         width: 100%;
-        padding: 12px;
-        margin-top: 10px;
-        border-radius: 10px;
+        border-radius: 14px;
         border: 1px solid #d1d5db;
+        padding: 14px 16px;
+        font-size: 1rem;
       }
       button {
-        background: #2563eb;
-        color: #fff;
+        background: #4f46e5;
         border: none;
+        color: white;
+        font-weight: 700;
         cursor: pointer;
       }
       button:hover {
-        background: #1e40af;
+        background: #4338ca;
       }
-      #result {
-        margin-top: 18px;
-        padding: 14px;
-        background: #eff6ff;
-        border-radius: 12px;
+      #preview {
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 18px;
+        border: 1px dashed #c7d2fe;
       }
     </style>
   </head>
   <body>
-    <main>
-      <div class="card">
+    <div class="container">
+      <section class="card">
         <h1>QR Code Generator</h1>
-        <p>Version 4: Script added to show typed text in the preview area.</p>
+        <p>Version 5: Better HTML structure, labels, and preview card.</p>
 
-        <label for="qr-text">Enter text or link</label>
-        <input id="qr-text" type="text" placeholder="Start typing..." />
+        <div class="field">
+          <label for="qr-text">Enter your text or URL</label>
+          <input id="qr-text" type="text" placeholder="https://example.com" />
+        </div>
         <button id="generate">Generate QR</button>
 
-        <div id="result">
-          <strong>Preview</strong>
-          <p id="preview-text">No input yet.</p>
+        <div id="preview">
+          <h2>Preview</h2>
+          <p id="preview-text">Fill the field and click generate to preview your QR content.</p>
         </div>
-      </div>
-    </main>
+      </section>
+    </div>
 
     <script>
       const generateButton = document.getElementById('generate');
@@ -71,11 +84,7 @@
 
       generateButton.addEventListener('click', () => {
         const value = qrText.value.trim();
-        if (!value) {
-          previewText.textContent = 'Please enter text or a link to generate a QR code.';
-          return;
-        }
-        previewText.textContent = `QR content: ${value}`;
+        previewText.textContent = value ? `Ready to generate: ${value}` : 'Please add text or a URL above.';
       });
     </script>
   </body>
