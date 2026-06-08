@@ -3,19 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Generator - Basic HTML</title>
+    <title>QR Generator - Basic Style</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 24px;
+        background: #f7f9fc;
+        color: #20232a;
+      }
+      header {
+        margin-bottom: 24px;
+      }
+      form {
+        max-width: 420px;
+        background: #ffffff;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: #2f80ed;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1f6ad6;
+      }
+      #preview {
+        margin-top: 16px;
+        padding: 16px;
+        background: #eef3ff;
+        border-radius: 10px;
+      }
+    </style>
   </head>
   <body>
     <header>
       <h1>QR Code Generator</h1>
-      <p>Version 1: Basic HTML setup.</p>
+      <p>Version 3: Added styling and a polished card layout.</p>
     </header>
 
     <main>
-      <label for="text-input">Enter text for your QR code:</label>
-      <input id="text-input" type="text" placeholder="Type something..." />
-      <button type="button">Generate</button>
-      <p>QR code preview will appear here in later versions.</p>
+      <form>
+        <label for="qr-text">Text or URL</label>
+        <input id="qr-text" type="text" placeholder="Enter text or link" />
+        <button type="button">Generate QR</button>
+      </form>
+      <section id="preview">
+        <strong>Preview</strong>
+        <p>Your QR code will appear here in the next version.</p>
+      </section>
     </main>
   </body>
 </html>
