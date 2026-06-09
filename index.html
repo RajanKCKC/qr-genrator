@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Generator - Modern UI</title>
+    <title>QR Generator - Responsive</title>
     <style>
       body {
         margin: 0;
@@ -11,42 +11,42 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: radial-gradient(circle at top left, #eef2ff 0%, #ffffff 40%, #f8fafc 100%);
+        background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
         font-family: 'Inter', Arial, sans-serif;
         color: #0f172a;
+        padding: 20px;
       }
       .card {
-        width: min(720px, 100%);
+        width: min(820px, 100%);
+        background: white;
         border-radius: 30px;
         padding: 36px;
-        background: rgba(255, 255, 255, 0.96);
-        box-shadow: 0 26px 70px rgba(15, 23, 42, 0.12);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.1);
       }
-      .grid {
+      .layout {
         display: grid;
-        gap: 24px;
+        gap: 26px;
       }
-      header {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-        align-items: flex-start;
+      .layout-two {
+        display: grid;
+        gap: 26px;
+        grid-template-columns: 1.2fr 0.8fr;
       }
-      header h1 {
-        margin: 0;
-        font-size: clamp(2rem, 2.5vw, 2.6rem);
+      h1 {
+        margin: 0 0 10px;
       }
       p.lead {
-        margin: 8px 0 0;
+        margin: 0;
         color: #475569;
       }
-      .form-group {
-        display: grid;
-        gap: 16px;
+      label {
+        display: block;
+        margin-bottom: 12px;
+        font-weight: 700;
       }
       input,
-      button,
-      select {
+      select,
+      button {
         width: 100%;
         border-radius: 16px;
         padding: 16px 18px;
@@ -54,63 +54,66 @@
         font-size: 1rem;
       }
       button {
+        background: #2563eb;
         border: none;
-        background: #313cee;
         color: white;
         cursor: pointer;
       }
-      button:hover {
-        background: #1f2dc4;
+      @media (max-width: 720px) {
+        .layout-two {
+          grid-template-columns: 1fr;
+        }
       }
       .result {
-        display: grid;
-        gap: 18px;
-        padding: 26px;
-        border-radius: 24px;
         background: #f8fbff;
         border: 1px solid #dbeafe;
+        border-radius: 24px;
+        padding: 24px;
       }
       .result img {
-        max-width: 100%;
-        border-radius: 18px;
+        width: 100%;
+        max-width: 320px;
+        border-radius: 20px;
       }
-      .controls {
+      .actions {
         display: flex;
-        gap: 12px;
+        gap: 14px;
         flex-wrap: wrap;
       }
-      .controls button {
+      .actions button,
+      .actions a {
         flex: 1;
       }
     </style>
   </head>
   <body>
     <section class="card">
-      <div class="grid">
-        <header>
-          <div>
-            <h1>QR Code Generator</h1>
-            <p class="lead">Modern UI with copy and download actions.</p>
-          </div>
-        </header>
-
-        <div class="form-group">
-          <label for="qr-text">Your text or link</label>
-          <input id="qr-text" type="text" placeholder="Enter anything to convert into QR" />
-          <button id="generate">Generate</button>
+      <div class="layout">
+        <div>
+          <h1>QR Code Generator</h1>
         </div>
 
-        <div id="result" class="result" hidden>
+        <div class="layout-two">
           <div>
-            <strong>Generated QR Code</strong>
-            <p id="result-text"></p>
+            <label for="qr-text">Text or URL</label>
+            <input id="qr-text" type="text" placeholder="https://your-site.com" />
+            <label for="qr-size">Size</label>
+            <select id="qr-size">
+              <option value="220">220 x 220</option>
+              <option value="320" selected>320 x 320</option>
+              <option value="420">420 x 420</option>
+            </select>
+            <button id="generate">Generate QR</button>
           </div>
-          <img id="qr-image" alt="Generated QR code" src="" />
-          <div class="controls">
-            <button id="copy-text">Copy Text</button>
-            <a id="download-link" download="qr-code.png">
-              <button type="button">Download PNG</button>
-            </a>
+
+          <div id="result" class="result" hidden>
+            <strong>QR Preview</strong>
+            <p id="result-text"></p>
+            <img id="qr-image" alt="Generated QR code" src="" />
+            <div class="actions">
+              <button id="copy-text">Copy Text</button>
+              <a id="download-link" download="qr-code.png"><button type="button">Download</button></a>
+            </div>
           </div>
         </div>
       </div>
@@ -118,6 +121,7 @@
 
     <script>
       const textInput = document.getElementById('qr-text');
+      const sizeSelect = document.getElementById('qr-size');
       const generateButton = document.getElementById('generate');
       const resultSection = document.getElementById('result');
       const qrImage = document.getElementById('qr-image');
@@ -125,30 +129,29 @@
       const copyButton = document.getElementById('copy-text');
       const downloadLink = document.getElementById('download-link');
 
-      function buildQrUrl(value, size = 320) {
+      function buildQrUrl(value, size) {
         return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(value)}`;
       }
 
       generateButton.addEventListener('click', () => {
-        const value = textInput.value.trim();
-        if (!value) {
-          alert('Enter some text or a URL first.');
+        const text = textInput.value.trim();
+        const size = sizeSelect.value;
+        if (!text) {
+          alert('Add text or a URL to generate the QR code.');
           return;
         }
 
-        resultText.textContent = value;
-        const url = buildQrUrl(value);
+        resultText.textContent = text;
+        const url = buildQrUrl(text, size);
         qrImage.src = url;
         downloadLink.href = url;
         resultSection.hidden = false;
       });
 
       copyButton.addEventListener('click', async () => {
-        const value = textInput.value.trim();
-        if (!value) {
-          return;
-        }
-        await navigator.clipboard.writeText(value);
+        const text = textInput.value.trim();
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
         copyButton.textContent = 'Copied!';
         setTimeout(() => {
           copyButton.textContent = 'Copy Text';
