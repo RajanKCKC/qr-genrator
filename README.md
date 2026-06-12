@@ -10,6 +10,12 @@ Open `index.html` in your browser. That's it.
 
 ---
 
+## Preview
+
+![QR Code Generator User Interface](screenshot.png)
+
+---
+
 ## What it does
 
 - Type or paste any text or URL and get a QR code immediately
